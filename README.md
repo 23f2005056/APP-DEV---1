@@ -65,9 +65,7 @@ project-root/
 │   └── campaign/
 │
 └── README.md
-
-
-
+```
 
 ---
 
@@ -104,3 +102,31 @@ python app.py
 ```
 
 ---
+
+## Core Functionalities
+
+- User Authentication
+- Role-Based Access
+- Campaign Management
+- Ad Request Management
+- Influencer Search
+- Campaign Search
+- Negotiation Workflow
+- Admin Dashboard
+
+---
+
+## Future Enhancements
+
+- Payment Gateway Integration
+- Real-Time Messaging
+- AI-Based Recommendations
+- Analytics Dashboard
+- Cloud Deployment
+
+---
+
+## Author
+
+**Harsha**  
+IIT Madras BS Degree Program
