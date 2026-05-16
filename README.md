@@ -65,3 +65,42 @@ project-root/
 │   └── campaign/
 │
 └── README.md
+
+
+
+
+---
+
+## Execution Steps
+
+### Create Virtual Environment
+
+```bash
+python -m venv env
+```
+
+### Activate Virtual Environment
+
+#### Windows
+```bash
+env\Scripts\activate
+```
+
+#### Linux / Mac
+```bash
+source env/bin/activate
+```
+
+### Install Required Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run the Application
+
+```bash
+python app.py
+```
+
+---
