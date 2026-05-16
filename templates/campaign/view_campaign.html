@@ -1,0 +1,21 @@
+<form action="/campaign/view" method="POST">
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Campaign</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" id="title" readonly>
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" name="description" id="description" rows="2" readonly></textarea>
+                    <label for="budget" class="form-label">Budget</label>
+                    <input type="text" class="form-control" name="budget" id="budget" readonly>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

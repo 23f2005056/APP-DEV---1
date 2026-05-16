@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Admin Find</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border border-dark rounded">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Welcome {{name}}</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link " href="/admin_dash">Info</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white rounded-pill px-3" href="#">Find</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/summary">Stats</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid d-flex align-items-center justify-content-center my-3">
+    <div class="input-group" style="width: 75%;">
+        <form action="" method="get" style="display: flex; width: 100%;">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search..." aria-label="Search">
+            <button class="btn btn-outline-secondary px-4" type="submit">
+                Search
+            </button>
+        </form>
+    </div>
+</div>
+      <div class="container">
+        <!-- Campaign List -->
+        {% if campaigns %}
+        <h2 class="mb-4">Active Campaigns</h2>
+            {% for camp in campaigns %}
+                <div class="card mb-3">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="campaign-text">
+                            {{ camp.title }} 
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewcModal" data-val="{{ camp.title }}#{{ camp.description }}#{{camp.budget}}">View</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#flagcModal" data-val="{{camp.title}}#{{camp.id}}">Flag</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+    <div class="container">
+      <!-- Campaign List -->
+      {% if sponsor %}
+      <h2 class="mb-4">Sponsors</h2>
+          {% for camp in sponsor %}
+              <div class="card mb-3">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                      <div class="campaign-text">
+                          {{ camp.name }} 
+                      </div>
+                      <div>
+                          <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewsModal" data-val="{{ camp.name }}#{{camp.id}}#{{camp.industry}}">View</button>
+                          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#flagsModal" data-val="{{ camp.name }}#{{camp.id}}">Flag</button>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+
+      {% endif %}
+  </div>
+
+
+  <div class="container">
+    <!-- Campaign List -->
+    {% if influencer %}
+    <h2 class="mb-4">Influencers</h2>
+        {% for camp in influencer %}
+            <div class="card mb-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="campaign-text">
+                        {{ camp.name }} 
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewiModal" data-val="{{ camp.name }}#{{camp.followers}}# {{camp.platform}}">View</button>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#flagiModal" data-val="{{ camp.name }}#{{camp.id}}">Flag</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+</div>
+    </div>
+
+  </body>
+
+
+  <!-- View list Modal -->
+ <form action="/campaign/View" method="POST">
+  <div class="modal fade" id="viewcModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">view Campaign</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" name="title" id="title" readonly>
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" name="description" id="description" rows="2" readonly></textarea>
+          <label for="budget" class="form-label">Budget</label>
+          <input type="text" class="form-control" name="budget" id="budget" readonly>
+
+        </div>
+  
+      
+      </div>
+    </div>
+  </div>
+  </form>
+  <script>
+    $("#viewcModal").on("show.bs.modal", function(event){
+      var st=$(event.relatedTarget).data('val');
+      var values=st.split('#');
+      $(this).find('#title').val(values[0]);
+      $(this).find('#description').val(values[1]);
+      $(this).find('#budget').val(values[2]);
+
+
+    });
+    </script>
+  
+
+
+
+
+<form action="/campaign/flag" method="POST">
+  <div class="modal fade" id="flagcModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Flag Campaign </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+              <label for="title" class="form-label">Are You sure</label>
+              <input type="text" class="form-control" name="title" id="title" readonly>
+              <label for="title" class="form-label"></label>
+              <input type="text" class="form-control" name="campid" id="campid" hidden>
+
+            </div>
+      
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Flag</button>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    <script>
+      $("#flagcModal").on("show.bs.modal", function(event){
+          var st=$(event.relatedTarget).data('val');
+          var values=st.split('#');
+          $(this).find('#title').val(values[0]);
+          $(this).find('#campid').val(values[1]);
+
+      });
+    </script>
+    
+
+
+
+
+
+    <form action="/sponsor/View" method="POST">
+      <div class="modal fade" id="viewsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+    
+            <div class="modal-header">
+              <h5 class="modal-title">view Sponsor</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+              <label for="title" class="form-label">Name</label>
+              <input type="text" class="form-control" name="title" id="name" readonly>
+              <label for="id" class="form-label">id</label>
+              <input type="text" class="form-control" name="id" id="id" readonly>
+              <label for="sponsor" class="form-label">industry</label>
+              <textarea class="form-control" name="sponsor" id="industry" rows="2" readonly></textarea>
+            </div>
+      
+          
+          </div>
+        </div>
+      </div>
+      </form>
+      <script>
+        $("#viewsModal").on("show.bs.modal", function(event){
+          var st=$(event.relatedTarget).data('val');
+          var values=st.split('#');
+          $(this).find('#name').val(values[0]);
+          $(this).find('#id').val(values[1]);
+          $(this).find('#industry').val(values[2]);
+
+    
+        });
+        </script>
+    
+    
+    
+    
+    <form action="/sponsor/flag" method="POST">
+      <div class="modal fade" id="flagsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Flag Campaign </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                  <label for="title" class="form-label">Are You sure</label>
+                  <input type="text" class="form-control" name="title" id="title" readonly>
+                  <label for="title" class="form-label"></label>
+                  <input type="text" class="form-control" name="id" id="id" hidden>
+                </div>
+          
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-danger">Flag</button>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+        </form>
+        
+        <script>
+          $("#flagsModal").on("show.bs.modal", function(event){
+              var st=$(event.relatedTarget).data('val');
+              var values=st.split('#');
+              $(this).find('#title').val(values[0]);
+              $(this).find('#id').val(values[1]);
+          });
+        </script>
+
+
+
+
+
+        <form action="/influencer/View" method="POST">
+          <div class="modal fade" id="viewiModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+        
+                <div class="modal-header">
+                  <h5 class="modal-title">view Influencer</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                  <label for="name" class="form-label">name</label>
+                  <input type="text" class="form-control" name="title" id="name" readonly>
+                  <label for="rating" class="form-label">platform</label>
+                  <input type="text" class="form-control" name="rating" id="platform" readonly>
+                  <label for="description" class="form-label">followers</label>
+                  <textarea class="form-control" name="description" id="followers" rows="2" readonly></textarea>
+
+                </div>
+          
+              
+              </div>
+            </div>
+          </div>
+          </form>
+          <script>
+            $("#viewiModal").on("show.bs.modal", function(event){
+              var st=$(event.relatedTarget).data('val');
+              var values=st.split('#');
+              $(this).find('#name').val(values[0]);
+              $(this).find('#platform').val(values[2]);
+              $(this).find('#followers').val(values[1]);
+        
+            });
+            </script>
+        
+        
+        
+        
+        <form action="/influencer/flag" method="POST">
+          <div class="modal fade" id="flagiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Flag Campaign </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                      <label for="title" class="form-label">Are You sure</label>
+                      <input type="text" class="form-control" name="title" id="title" readonly>
+                      <label for="title" class="form-label"></label>
+                      <input type="text" class="form-control" name="id" id="id" hidden>
+                    </div>
+              
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger">Flag</button>
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+            </form>
+            
+            <script>
+              $("#flagiModal").on("show.bs.modal", function(event){
+                  var st=$(event.relatedTarget).data('val');
+                  var values=st.split('#');
+                  $(this).find('#title').val(values[0]);
+                  $(this).find('#id').val(values[1]);
+              });
+            </script>
+    

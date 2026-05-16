@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Sponsor Campaign</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border border-dark rounded">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">I&SE Dashboard</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/spon_dash">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white rounded-pill px-3" href="#">Campaigns</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/spon_find">Find</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/summary">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+    <div id="panel">
+        {% if campaigns %}
+        <div class="container">
+            <div class="row">
+                {% for camp in campaigns %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <input type="hidden" name="list_id" value="{{ camp.id }}">
+                            <h5 class="card-title">{{ camp.title }}
+                                <a href="#" type="button" class="btn" id="edit_button" data-bs-toggle="modal" data-bs-target="#editCampaignModal" data-val="{{ camp.title }}#{{ camp.description }}#{{ camp.budget }}#{{ camp.date }}#{{camp.id}}">edit</a>
+                                <a href="#" type="button" class="btn" id="delete_button" data-bs-toggle="modal" data-bs-target="#deleteCampaignModal" data-val="{{ camp.title }}#{{ camp.description }}#{{camp.id}}">delete</a>
+                                <a href="#" type="button" class="btn" id="view_button" data-bs-toggle="modal" data-bs-target="#viewModal" data-val="{{ camp.title }}#{{ camp.description }}#{{ camp.budget }}#{{ camp.date }}">view</a>
+                            </h5>
+                            <p class="card-text">description : {{ camp.description }}</p>
+                            <p class="card-text">end date : {{ camp.end_date }}</p>
+                            <p class="card-text">progress : {{ camp. progress }}</p>
+                            <a href="{{ url_for('spon_find_influ', des = camp.description,tit=camp.title, id=camp.id)}}"type="button" class="btn" >Find Influencers</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="d-flex justify-content-md-center">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCampaignModal">+Add Campaign</button>
+        </div>
+    </div>
+
+    {% include 'campaign/add_campaign.html' %}
+    {% include 'campaign/edit_campaign.html' %}
+    {% include 'campaign/delete_campaign.html' %}
+    {% include 'campaign/view_campaign.html' %}
+
+    <script>
+        
+        $("#editCampaignModal").on("show.bs.modal", function(event){
+            var st = $(event.relatedTarget).data('val');
+            var values = st.split('#');
+            $(this).find('#title').val(values[0]);
+            $(this).find('#description').val(values[1]);
+            $(this).find('#budget').val(values[2]);
+            $(this).find('#date').val(values[3]);
+            $(this).find('#id').val(values[4]);
+
+        });
+    
+        $("#deleteCampaignModal").on("show.bs.modal", function(event){
+            var st = $(event.relatedTarget).data('val');
+            var values = st.split('#');
+            $(this).find('#title').val(values[0]);
+            $(this).find('#description').val(values[1]);
+            $(this).find('#id').val(values[2]);
+        });
+    
+        $("#viewModal").on("show.bs.modal", function(event){
+            var st = $(event.relatedTarget).data('val');
+            var values = st.split('#');
+            $(this).find('#title').val(values[0]);
+            $(this).find('#description').val(values[1]);
+            $(this).find('#budget').val(values[2]);
+        });
+    </script>
+    
+    
+</html>
